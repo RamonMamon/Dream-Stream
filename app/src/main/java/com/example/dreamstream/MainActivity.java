@@ -1,14 +1,17 @@
 package com.example.dreamstream;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -21,12 +24,17 @@ public class MainActivity extends AppCompatActivity
     CallbackManager callbackManager;
     private static final String EMAIL = "email";
     LoginButton loginButton;
+    boolean isLoggedIn;
+    boolean inNetwork = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+//        isLoggedIn = accessToken != null || !accessToken.isExpired();
 
         joinNetworkSwitch = findViewById(R.id.switch1);
 
@@ -40,6 +48,12 @@ public class MainActivity extends AppCompatActivity
                     // Join the Dream Network
 
                     // Connect Facebook account (If not already connected)
+//                    if(!isLoggedIn)
+//                    {
+//                        login();
+//                        joinNetwork();
+//                    }
+                    inNetwork = true;
 
                     // Send Friend request on Facebook
 
@@ -54,6 +68,7 @@ public class MainActivity extends AppCompatActivity
                     // Leave the dream network.
 
                     // Remove Dream network from list of friends.
+                    inNetwork = false;
 
                     System.out.println("Unchecking");
 
@@ -61,38 +76,61 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        callbackManager = CallbackManager.Factory.create();
+//        callbackManager = CallbackManager.Factory.create();
+//
+//        loginButton = (LoginButton) findViewById(R.id.login_button);
+//        loginButton.setReadPermissions(Arrays.asList(EMAIL));
+//        // If you are using in a fragment, call loginButton.setFragment(this);
+//
+//        // Callback registration
+//        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                // App code
+//                // login result contains the access token.
+//                System.out.println("Login Successful");
+//                System.out.println("Access key:" + loginResult);
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                // App code
+//                System.out.println("Login Cancelled");
+//            }
+//
+//            @Override
+//            public void onError(FacebookException exception) {
+//                // App code
+//                System.out.println("Login Failed");
+//            }
+//        });
 
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList(EMAIL));
-        // If you are using in a fragment, call loginButton.setFragment(this);
 
-        // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-                // login result contains the access token.
-                System.out.println("Login Successful");
-            }
+    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        /*
+//        Every activity and fragment that you integrate with the FacebookSDK
+//        Login or Share should forward onActivityResult to the callbackManager.
+//         */
+//
+//        callbackManager.onActivityResult(requestCode, resultCode, data);
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 
-            @Override
-            public void onCancel() {
-                // App code
-                System.out.println("Login Cancelled");
-            }
+    /**
+     * Connects the User's account to the application.
+     */
+    protected void login()
+    {
+        // Retrieve the access key.
 
-            @Override
-            public void onError(FacebookException exception) {
-                // App code
-                System.out.println("Login Failed");
-            }
-        });
-
+        // Verify Access key
     }
 
     /**
-     * Joins the Dream network
+     * Joins the Dream network (Add user on Facebook)
      */
     private void joinNetwork()
     {
